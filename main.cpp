@@ -30,6 +30,13 @@ public:
     int _number;
     std::vector<int> _brakes;
     EMERSON_DEFINE_TYPE_INTRUSIVE (SportCar, number, brakes, carname, maxSpeed, old)
+
+    virtual void from_json (const json& j){
+        *this = j;
+    }
+    virtual void to_json (json& j){
+        j = *this;
+    }
 };
 
 
