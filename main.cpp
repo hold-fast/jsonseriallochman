@@ -6,12 +6,12 @@
 using nlohmann::json;
 
 
-#define EMERSON_JSON_TO(v1) nlohmann_json_j[#v1] = nlohmann_json_t._##v1;
-#define EMERSON_JSON_FROM(v1) nlohmann_json_j.at(#v1).get_to(nlohmann_json_t._##v1);
+#define MY_JSON_TO(v1) nlohmann_json_j[#v1] = nlohmann_json_t._##v1;
+#define MY_JSON_FROM(v1) nlohmann_json_j.at(#v1).get_to(nlohmann_json_t._##v1);
 
-#define EMERSON_DEFINE_TYPE_INTRUSIVE(Type, ...)  \
-    friend void to_json(nlohmann::json& nlohmann_json_j, const Type& nlohmann_json_t) { NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(EMERSON_JSON_TO, __VA_ARGS__)) } \
-    friend void from_json(const nlohmann::json& nlohmann_json_j, Type& nlohmann_json_t) { NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(EMERSON_JSON_FROM, __VA_ARGS__)) }
+#define MY_DEFINE_TYPE_INTRUSIVE(Type, ...)  \
+    friend void to_json(nlohmann::json& nlohmann_json_j, const Type& nlohmann_json_t) { NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(MY_JSON_TO, __VA_ARGS__)) } \
+    friend void from_json(const nlohmann::json& nlohmann_json_j, Type& nlohmann_json_t) { NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(MY_JSON_FROM, __VA_ARGS__)) }
 
 class Car {
 
@@ -21,7 +21,7 @@ public:
     bool _old;
 
 
-    EMERSON_DEFINE_TYPE_INTRUSIVE (Car, carname, maxSpeed, old)
+    MY_DEFINE_TYPE_INTRUSIVE (Car, carname, maxSpeed, old)
 };
 
 
@@ -29,7 +29,7 @@ class SportCar : public Car{
 public:
     int _number;
     std::vector<int> _brakes;
-    EMERSON_DEFINE_TYPE_INTRUSIVE (SportCar, number, brakes, carname, maxSpeed, old)
+    MY_DEFINE_TYPE_INTRUSIVE (SportCar, number, brakes, carname, maxSpeed, old)
 
     virtual void from_json (const json& j){
         *this = j;
@@ -45,7 +45,7 @@ public:
     SportCar _sportcar;
     Car _car;
 
-    EMERSON_DEFINE_TYPE_INTRUSIVE (Garage, sportcar, car)
+    MY_DEFINE_TYPE_INTRUSIVE (Garage, sportcar, car)
 };
 
 
