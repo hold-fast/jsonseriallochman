@@ -33,11 +33,20 @@ public:
 };
 
 
+class Garage {
+public:
+    SportCar _sportcar;
+    Car _car;
+
+    EMERSON_DEFINE_TYPE_INTRUSIVE (Garage, sportcar, car)
+};
+
+
 int main(int argc, char *argv[])
 {
     QCoreApplication a(argc, argv);
 
-    json j1, j2;
+    json j, j1, j2;
 
     Car car;
     car._carname = "test_1";
@@ -55,11 +64,19 @@ int main(int argc, char *argv[])
     }
     j2 = sportcar;
 
+    Garage garage;
+    garage._car = car;
+    garage._sportcar = sportcar;
+
+    j = garage;
+
     std::string s1 = j1.dump();
     std::string s2 = j2.dump();
+    std::string s = j.dump();
 
     qDebug() << s1.c_str();
     qDebug() << s2.c_str();
+    qDebug() << s.c_str();
 
     return a.exec();
 }
